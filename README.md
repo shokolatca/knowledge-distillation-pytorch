@@ -65,6 +65,26 @@ python synthesize_results.py --parent_dir experiments/cnn_distill_alpha_temp
 ```
 
 
+## MMS LID 126 (offline ONNX teacher -> student distillation)
+
+This repository now also includes a separate modern pipeline for offline pseudo-label distillation:
+
+1. Export soft pseudo-labels/logits from ONNX teacher:
+```
+python tools/export_pseudo_labels_onnx.py --manifest data/mms_lid_126/manifest.jsonl --split train --onnx /path/to/mms_lid_126.onnx --output data/mms_lid_126/pseudo_train.npz --input-format waveform
+```
+2. Train student:
+```
+python train_mms_lid.py --model_dir experiments/mms_lid_126_distill
+```
+3. Evaluate:
+```
+python evaluate_mms_lid.py --model_dir experiments/mms_lid_126_distill --restore_file best
+```
+
+See `experiments/mms_lid_126_distill/README.md` and `requirements-mms.txt` for setup details.
+
+
 ## Results: "Shallow" and "Deep" Distillation
 
 Quick takeaways (more details to be added):
